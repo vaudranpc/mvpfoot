@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MVP FOOT - La quotidienne</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script>
+      function readXML() {
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Define the path to your XML file
+        var xmlPath = "./index.xml";
+
+        // Set up the XMLHttpRequest object
+        xhr.open("GET", xmlPath, true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // XML response is ready
+            var xmlResponse = xhr.responseXML;
+
+            // Get all book elements
+            var bookElements = xmlResponse.getElementsByTagName("article");
+
+            // Prepare a string to store the extracted data
+            var data = "";
+
+            // Iterate over each book element
+            for (var i = 0; i < bookElements.length; i++) {
+              var book = bookElements[i];
+
+              // Extract title, author, and year
+              var title = book.getElementsByTagName("title")[0].textContent;
+              var photo = book.getElementsByTagName("photo")[0].textContent;
+              var description =
+                book.getElementsByTagName("description")[0].textContent;
+
+              // Append the extracted data to the 'data' string
+              data += '<h1 class="book-title">' + title + "</h1>";
+              data += '<p align="center""><img src=' + photo + " /></p>";
+              data +=
+                '<p class="book-description" align="center">' +
+                description +
+                "</p>";
+              data += "<hr>";
+            }
+
+            // Display the extracted data
+            document.getElementById("output").innerHTML = data;
+          }
+        };
+
+        // Send the request
+        xhr.send();
+      }
+    </script>
+  </head>
+  <body onload="readXML()">
+    <h1>MVP Foot</h1>
+    <!-- <button onload="readXML()">Read XML</button> -->
+    <div id="output"></div>
+
+    <h1>Merci et à demain</h1>
+  </body>
+</html>
